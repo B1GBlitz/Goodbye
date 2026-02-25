@@ -7,162 +7,171 @@
     <link href="https://fonts.googleapis.com/css2?family=Itim&family=Vibur&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. การตั้งค่าพื้นฐาน --- */
+        /* --- 1. การตั้งค่าพื้นฐาน (สีชมพูเข้มขึ้น) --- */
         :root { 
-            --bg-pastel: #ffe6ea; 
-            --text-dark: #5a4a42; 
-            --heart-dark: #ff477e; 
+            /* ปรับสีให้เข้มขึ้นตามคำขอ */
+            --bg-color: #ffcad4; 
+            --bg-gradient: linear-gradient(135deg, #ffcad4 0%, #f4acb7 100%);
+            --text-dark: #6d4c41; 
+            --heart-color: #d81159; 
+            --envelope-color: #ffffff;
         }
         
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body, html { 
             margin: 0; padding: 0; 
-            background: linear-gradient(180deg, #ffe6ea 0%, #fff0f5 100%);
+            background: var(--bg-gradient);
             color: var(--text-dark); 
             font-family: 'Itim', cursive; 
             width: 100%; min-height: 100vh; 
             overflow-x: hidden;
-            touch-action: manipulation; /* ลดดีเลย์การสัมผัส */
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* --- 2. หน้าแรก: ซองจดหมายดุ๊กดิ๊ก --- */
+        /* --- 2. หน้าแรก: ซองจดหมายสีขาว + หัวใจ --- */
         #landing-screen { 
             position: fixed; inset: 0; 
             display: flex; flex-direction: column; 
             justify-content: center; align-items: center; 
-            background: radial-gradient(circle, #ffe6ea 0%, #ffc0cb 100%);
+            background: var(--bg-gradient);
             z-index: 1000; 
-            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
         }
         
-        .envelope-container {
+        .envelope-wrapper {
             position: relative;
             cursor: pointer;
-            animation: floatEnv 3s ease-in-out infinite;
+            transition: transform 0.3s;
         }
-        @keyframes floatEnv { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .envelope-wrapper:active { transform: scale(0.95); }
 
-        .envelope-icon {
-            font-size: 80px;
-            filter: drop-shadow(0 10px 20px rgba(231, 84, 128, 0.4));
-            animation: shake 2s infinite;
-        }
-        @keyframes shake { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
-        
-        .tap-hint {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            color: var(--heart-dark);
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px 20px;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        /* --- 3. หน้าเนื้อหา: กระจกฝ้า (Glassmorphism) --- */
-        #main-content { 
-            display: none; 
-            padding: 15px; min-height: 100vh; 
-            display: flex; flex-direction: column; align-items: center; 
-            position: relative; z-index: 10; padding-bottom: 80px; 
-        }
-        
-        .message-box { 
-            /* 🔥 เทคนิคกระจกฝ้า */
-            background: rgba(255, 255, 255, 0.65); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            
-            padding: 25px; 
-            border-radius: 25px; 
-            width: 100%; margin-top: 20px; 
-            box-shadow: 0 15px 40px rgba(231, 84, 128, 0.15); 
-            min-height: 200px;
+        /* ตัวซองจดหมาย (CSS Pure) */
+        .envelope {
+            width: 280px; height: 180px;
+            background: var(--envelope-color);
             position: relative;
-            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            display: flex; justify-content: center; align-items: center;
         }
         
-        /* แสงวิบวับพาดผ่านกล่อง */
-        .message-box::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
-            transform: skewX(-25deg);
-            animation: shine 6s infinite;
+        /* ฝาซอง (สามเหลี่ยม) */
+        .envelope::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #f0f0f0; /* สีฝาซองเข้มกว่านิดนึง */
+            border-radius: 10px;
         }
-        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+
+        /* หัวใจปิดผนึก */
+        .seal-heart {
+            position: absolute; top: 40px; z-index: 2;
+            font-size: 50px; color: var(--heart-color);
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+            animation: beat 1s infinite;
+        }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        
+        .tap-text {
+            margin-top: 30px; font-size: 1.4rem; color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+
+        /* --- 3. หน้าเนื้อหาหลัก --- */
+        #main-content { 
+            display: none; width: 100%; min-height: 100vh;
+            justify-content: center; align-items: center; 
+            position: relative; padding: 20px;
+        }
+
+        /* กล่องข้อความ */
+        .message-box { 
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px; 
+            border-radius: 25px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1); 
+            max-width: 600px; width: 100%;
+            min-height: 300px;
+            position: absolute; /* ซ้อนทับกัน */
+            opacity: 1; transition: opacity 1s, transform 1s;
+            display: flex; justify-content: center; align-items: center;
+        }
         
         #typed-text { 
-            white-space: pre-wrap; line-height: 1.9; font-size: 1.15rem; 
-            display: block; position: relative; z-index: 2;
+            white-space: pre-wrap; line-height: 2; font-size: 1.2rem; 
+            text-align: center; width: 100%;
         }
 
-        /* --- 4. เอฟเฟกต์ Particle ตามนิ้ว --- */
-        .touch-particle {
-            position: fixed;
-            pointer-events: none;
-            width: 15px; height: 15px;
-            background: var(--heart-dark);
-            border-radius: 50%;
-            animation: popOut 0.8s forwards;
-            z-index: 9999;
-        }
-        @keyframes popOut { 
-            0% { opacity: 1; transform: scale(1); } 
-            100% { opacity: 0; transform: scale(2); } 
-        }
-
-        /* --- 5. แอนิเมชันหัวใจตอนจบ --- */
+        /* --- 4. ฉากจบ (แอนิเมชัน) --- */
         #ending-scene {
-            position: relative; width: 100%; height: 500px; 
-            margin-top: 20px; display: none; overflow: visible;
+            position: absolute; /* ซ้อนทับกัน */
+            width: 100%; height: 500px; 
+            opacity: 0; pointer-events: none; /* เริ่มต้นซ่อนไว้ */
+            transition: opacity 1s, transform 1s;
+            transform: scale(0.9);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
+        /* สถานะตอนแสดงผล */
+        .show-ending { opacity: 1 !important; pointer-events: auto !important; transform: scale(1) !important; }
+        .hide-message { opacity: 0 !important; transform: scale(0.9) !important; pointer-events: none !important; }
 
         .container { width: 100%; height: 100%; position: relative; }
         
+        /* น้องเด็ก */
         .body_left {
-            width: 130px; position: absolute; bottom: 70px; right: 5%; z-index: 98;
-            transform-origin: bottom center;
+            width: 130px; position: absolute; bottom: 80px; right: 10%; z-index: 98;
             animation: bounceIn 2s infinite ease-in-out;
         }
         @keyframes bounceIn { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-8px) rotate(3deg); } }
-        .body_left img { width: 100%; height: auto; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .body_left img { width: 100%; height: auto; }
 
+        /* หัวใจใหญ่ */
         .love {
             width: 520px; height: 440px;
-            position: absolute; top: 10px; left: 50%; 
-            transform: translateX(-50%) scale(0.48); 
-            transform-origin: top center;
+            position: absolute; top: 50%; left: 50%; 
+            /* จัดกึ่งกลางจอ */
+            transform: translate(-50%, -50%) scale(0.5); 
+            transform-origin: center center;
         }
-
         .love .block div {
             width: 40px; height: 40px; position: absolute;
             background: url("heart.png") no-repeat; 
             background-size: contain;
-            filter: drop-shadow(0 3px 3px rgba(231, 84, 128, 0.3));
         }
 
         .logo { 
-            text-align: center; width: 100%; 
-            position: absolute; bottom: -30px; left: 0; 
-            opacity: 0; animation: fadeIn 2s ease-in forwards; animation-delay: 2s; 
+            text-align: center; width: 100%; position: absolute; bottom: 0; 
+            opacity: 0; transition: opacity 1s; 
         }
-        .logo b { font: 200 45px "Vibur", sans-serif; color: crimson; text-shadow: 0 0 15px #ffb7b2; }
-        @keyframes fadeIn { to { opacity: 1; } }
+        .logo b { font: 200 50px "Vibur", sans-serif; color: crimson; text-shadow: 0 0 15px #ffb7b2; }
 
+        /* ปุ่มดูอีกครั้ง */
+        #replay-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: white; color: var(--heart-color);
+            border: 2px solid var(--heart-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Itim';
+            display: none; /* ซ่อนก่อน */
+            z-index: 100;
+        }
+
+        /* --- อื่นๆ --- */
         .floating-hearts-container { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
         .float-heart { 
             position: absolute; bottom: -50px; 
-            font-size: 20px; color: var(--heart-dark); opacity: 0.5; 
+            font-size: 20px; color: var(--heart-color); opacity: 0.5; 
             animation: floatUpSoft linear forwards; 
         }
         @keyframes floatUpSoft { to { transform: translateY(-110vh) rotate(360deg); opacity: 0; } }
 
         @media (min-width: 600px) {
-            .message-box { max-width: 500px; }
-            .love { transform: translateX(-50%) scale(0.7); top: 30px; }
-            .body_left { right: 20%; width: 160px; bottom: 80px; }
+            .love { transform: translate(-50%, -50%) scale(0.8); }
         }
     </style>
 </head>
@@ -171,14 +180,15 @@
     <div class="floating-hearts-container" id="bg-hearts"></div>
 
     <div id="landing-screen" onclick="startJourney()">
-        <div class="envelope-container">
-            <div class="envelope-icon">💌</div>
+        <div class="envelope-wrapper">
+            <div class="envelope"></div>
+            <div class="seal-heart">❤</div>
         </div>
-        <div class="tap-hint">แตะเพื่อเปิดจดหมาย...</div>
+        <div class="tap-text">แตะเพื่อเปิดอ่าน...</div>
     </div>
 
     <div id="main-content">
-        <div class="message-box">
+        <div class="message-box" id="msg-box">
             <span id="typed-text"></span>
         </div>
         
@@ -195,127 +205,4 @@
                 <b>I <span>Lo</span>ve<span> Y</span>ou</b>
                 <p style="font-family: 'Itim'; font-size: 18px; margin-top: 5px; color: #e75480;">รักและคิดถึงเสมอ... จากครูBIG</p>
             </div>
-        </div>
-    </div>
-
-    <script>
-        // --- 1. ระบบสัมผัสเสกดาว (Touch Magic) ---
-        // ฟังก์ชันสร้างดาวเมื่อสัมผัสหน้าจอ
-        function createParticle(x, y) {
-            const particle = document.createElement('div');
-            particle.classList.add('touch-particle');
-            document.body.appendChild(particle);
-            
-            particle.style.left = x + 'px';
-            particle.style.top = y + 'px';
-            
-            const colors = ['#ff477e', '#ff9dbf', '#ffc8dd', '#bde0fe', '#a2d2ff'];
-            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            setTimeout(() => particle.remove(), 800);
-        }
-
-        // รองรับทั้งการแตะและลากนิ้ว
-        document.addEventListener('touchstart', (e) => {
-            createParticle(e.touches[0].pageX, e.touches[0].pageY);
-        });
-        document.addEventListener('touchmove', (e) => {
-            createParticle(e.touches[0].pageX, e.touches[0].pageY);
-        });
-        // รองรับเมาส์ด้วย (เผื่อเปิดในคอม)
-        document.addEventListener('mousemove', (e) => {
-            if(Math.random() > 0.8) createParticle(e.pageX, e.pageY); // ให้มาน้อยหน่อยถ้าใช้เมาส์
-        });
-
-
-        // --- 2. ระบบหัวใจ (Core Animation) ---
-        const blk_pitn={block1:[[0,1],[0,0],[-1,0],[-1,-1]],block2:[[0,1],[0,0],[-1,0],[0,-1]],block3:[[-1,1],[0,0],[-1,0],[-1,-1]],block4:[[0,1],[0,0],[-1,0],[-1,-1]],block5:[[-1,1],[0,0],[-1,0],[0,-1]],block6:[[0,-1],[0,0],[-1,0],[1,-1]],block7:[[-1,-1],[0,0],[-1,0],[1,0]],block8:[[-1,1],[0,0],[-1,0],[-1,-1]],block9:[[0,-1],[0,0],[-1,0],[1,0]],block10:[[-1,1],[0,0],[-1,0],[1,0]],block11:[[2,0],[0,0],[-1,0],[1,0]],block12:[[0,1],[0,0],[-1,0],[0,-1]],block13:[[0,1],[0,0],[-1,0],[-1,-1]],block14:[[1,1],[0,0],[-1,0],[1,0]],block15:[[1,-1],[0,0],[-1,0],[1,0]],block16:[[-1,-1],[0,0],[-1,0],[1,0]],block17:[[0,1],[0,0],[-1,0],[0,-1]],block18:[[0,1],[0,0],[-1,0],[-1,-1]],block19:[[0,-1],[0,0],[-1,0],[1,0]],block20:[[1,-1],[0,0],[-1,0],[1,0]],block21:[[0,1],[0,0],[-1,0],[-1,-1]],block22:[[1,1],[0,0],[-1,0],[1,0]],block23:[[0,2],[0,0],[0,-1],[0,1]]};
-        const offset_pitn={block1:[5,3],block2:[5,1],block3:[3,4],block4:[3,2],block5:[3,-1],block6:[2,5],block7:[2,1],block8:[1,-1],block9:[1,-3],block10:[1,2],block11:[0,3],block12:[0,0],block13:[-1,-4],block14:[0,-2],block15:[-2,4],block16:[-2,2],block17:[-2,0],block18:[-3,-2],block19:[-4,0],block20:[-3,5],block21:[-5,3],block22:[-4,1],block23:[-6,1]};
-
-        function startHeartAnimation(){
-            let blocks=document.getElementsByClassName("block"),block=blocks[0],love=document.getElementsByClassName("love")[0];
-            let index=0,timer=null;
-            block.style.top="50%"; block.style.left="50%"; block.style.margin="-20px 0 0 -20px";
-            const block_left=parseFloat(window.getComputedStyle(block,null).left.slice(0,-2));
-            const block_top=parseFloat(window.getComputedStyle(block,null).top.slice(0,-2));
-            function Next(){
-                if(++index>=24){clearInterval(timer); return;} 
-                block.style.visibility="visible";
-                block.style.left=block_left+40*offset_pitn["block"+index][0]+"px";
-                block.style.top=block_top-40*offset_pitn["block"+index][1]+"px";
-                for(let i=0;i<block.children.length;i++){
-                    block.children[i].style.left=-40*blk_pitn["block"+index][i][0]+"px";
-                    block.children[i].style.top=-40*blk_pitn["block"+index][i][1]+"px";
-                }
-                let clone=block.cloneNode(true);
-                love.appendChild(clone);
-            }
-            timer=setInterval(Next,300);
-        }
-
-        const message=`ถึงนักเรียนที่น่ารักทุกคน...
-
-เวลา 1 ปีที่ผ่านมา ผ่านไปไวจังเลยเนอะ
-
-ขอบคุณสำหรับทุกความทรงจำดีๆ 
-ขอบคุณที่เป็นเด็กดี (บ้าง ดื้อบ้าง 555)
-ขอบคุณที่ทำให้การฝึกสอนของครูมีความหมายมากๆ
-
-ถึงเวลาที่ครูต้องไปแล้ว...
-ขอให้ทุกคนเติบโตอย่างสดใส 
-มีความสุขมากๆ กับเส้นทางข้างหน้านะ
-
-อย่าลืมดูแลตัวเองดีๆ นะเด็กๆ
-ครูจะคอยเฝ้าดูความสำเร็จของพวกหนูอยู่เสมอ...
-
-รักทุกคนนะครับ. 💖`;
-
-        let bgMusic, landing, mainContent, endingScene;
-
-        window.onload = function() {
-            bgMusic = document.getElementById("bgMusic");
-            landing = document.getElementById("landing-screen");
-            mainContent = document.getElementById("main-content");
-            endingScene = document.getElementById("ending-scene");
-            setInterval(createFloatingHeart, 800);
-        };
-
-        function startJourney(){
-            const hint = document.querySelector(".tap-hint");
-            hint.innerHTML = "กำลังเปิดจดหมาย... ✨";
-            
-            if(bgMusic) bgMusic.play().catch(e=>console.log("Audio Error"));
-            
-            landing.style.transform = "translateY(-100vh)"; // เลื่อนขึ้นไปข้างบนเหมือนเปิดซอง
-            setTimeout(()=>{
-                landing.style.display="none";
-                mainContent.style.display="flex";
-                typeWriter();
-            },800);
-        }
-
-        let i=0;
-        function typeWriter(){
-            if(i<message.length){
-                document.getElementById("typed-text").innerHTML+=message.charAt(i);
-                i++;
-                setTimeout(typeWriter,50);
-            }else{
-                endingScene.style.display="block";
-                startHeartAnimation();
-                setTimeout(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"})},100);
-            }
-        }
-
-        function createFloatingHeart(){
-            const e=document.createElement("div");
-            e.innerText="❤"; e.classList.add("float-heart");
-            e.style.left=Math.random()*100+"vw";
-            e.style.fontSize=Math.random()*15+15+"px";
-            e.style.animationDuration=Math.random()*5+5+"s";
-            document.getElementById("bg-hearts").appendChild(e);
-            setTimeout(()=>e.remove(),10000);
-        }
-    </script>
-</body>
-</html>
+            <button id="replay-btn" onclick="showTextAgain()">อ่านข้อ
