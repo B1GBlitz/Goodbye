@@ -41,7 +41,6 @@
             position: relative;
             cursor: pointer;
             transition: transform 0.3s;
-            /* 🔥 เพิ่ม: กำหนดขนาดให้ชัดเจน เพื่อให้จัดกลางได้ง่าย */
             width: 280px; 
             height: 180px;
         }
@@ -59,24 +58,21 @@
             content: ''; position: absolute; top: 0; left: 0;
             border-left: 140px solid transparent;
             border-right: 140px solid transparent;
-            border-top: 100px solid #f2f2f2; /* สีฝาซอง */
+            border-top: 100px solid #f2f2f2;
             border-radius: 10px;
         }
 
-        /* 🔥 แก้ไข: หัวใจบนซอง (จัดกึ่งกลางแบบล็อกเป้า) */
+        /* หัวใจบนซอง (กลางเป๊ะ) */
         .seal-heart {
             position: absolute; 
-            top: 45px;          /* ปรับความสูงให้อยู่ตรงปลายฝาซองพอดี */
-            left: 50%;          /* ดันมาที่กึ่งกลาง 50% */
+            top: 45px;          
+            left: 50%;          
             z-index: 2;
             font-size: 50px; 
             color: var(--heart-color);
             filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
-            /* เรียกใช้ Animation ตัวใหม่ที่รวมการจัดกลางไว้แล้ว */
             animation: beatCenter 1s infinite;
         }
-        
-        /* Animation ใหม่: เต้นโดยไม่เสียตำแหน่งกึ่งกลาง */
         @keyframes beatCenter { 
             0%, 100% { transform: translate(-50%, -50%) scale(1); } 
             50% { transform: translate(-50%, -50%) scale(1.1); } 
@@ -113,7 +109,7 @@
             text-align: center; width: 100%;
         }
 
-        /* --- 4. ฉากจบ --- */
+        /* --- 4. ฉากจบ (กลางเป๊ะ) --- */
         #ending-scene {
             position: absolute; 
             width: 100%; height: 100%;
@@ -134,14 +130,14 @@
         @keyframes bounceIn { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-8px) rotate(3deg); } }
         .body_left img { width: 100%; height: auto; }
 
-        /* 🔥 แก้ไข: หัวใจใหญ่ตอนจบ (จัดกึ่งกลางแบบ Absolute Center) */
+        /* หัวใจใหญ่ (กลางเป๊ะ + ขยายขนาดนิดนึง) */
         .love {
             width: 520px; height: 440px;
             position: absolute;
             top: 50%; left: 50%;
-            /* ดึงกลับมา 50% เพื่อให้กลางเป๊ะ และปรับขนาดสำหรับมือถือ */
+            /* ดึงกลับมา 50% = กลางเป๊ะ */
             transform: translate(-50%, -50%) scale(0.55);
-            transform-origin: center center; /* จุดหมุนอยู่ตรงกลาง */
+            transform-origin: center center;
         }
 
         .love .block div {
@@ -231,7 +227,6 @@
             love.innerHTML = '<div class="block"><div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div></div>';
             block = love.children[0];
 
-            // กำหนดตำแหน่งเริ่มต้นให้สัมพันธ์กับ container
             block.style.top="50%"; block.style.left="50%"; block.style.margin="-20px 0 0 -20px";
             
             const block_left=parseFloat(window.getComputedStyle(block,null).left.slice(0,-2));
@@ -254,7 +249,9 @@
                 let clone=block.cloneNode(true);
                 love.appendChild(clone);
             }
-            timer=setInterval(Next,300);
+            
+            // 🔥 ตรงนี้คือความเร็วครับ (ยิ่งเลขน้อยยิ่งเร็ว)
+            timer=setInterval(Next, 80); 
         }
 
         const message=`ถึงนักเรียนที่น่ารักทุกคน...
@@ -301,7 +298,7 @@
                 i++;
                 setTimeout(typeWriter,50);
             }else{
-                setTimeout(switchToAnimation, 3000);
+                setTimeout(switchToAnimation, 2000); // รอแป๊บเดียวแล้วไปเลย
             }
         }
 
