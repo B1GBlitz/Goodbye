@@ -100,6 +100,19 @@
             opacity: 1; transition: opacity 1s, transform 1s;
             display: flex; justify-content: center; align-items: center;
             z-index: 20;
+            overflow: visible; /* อนุญาตให้หัวใจล้นขอบได้ */
+        }
+
+        /* 🔥 เพิ่มหัวใจมุมซ้ายบนของกล่องข้อความ */
+        .box-heart-decor {
+            position: absolute;
+            top: -25px;  /* ขยับขึ้นไปเกาะขอบบน */
+            left: -20px; /* ขยับไปทางซ้ายเกาะขอบซ้าย */
+            width: 70px; /* ขนาดหัวใจกำลังดี */
+            height: auto;
+            transform: rotate(-15deg); /* เอียงนิดๆ ให้ดูน่ารัก */
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+            z-index: 25;
         }
         
         #typed-text { 
@@ -121,17 +134,15 @@
 
         .container { width: 100%; height: 100%; position: relative; }
         
-        /* 🔥 แก้ไข 1: ย้ายเด็กมาซ้าย (ตำแหน่งวงกลม) */
+        /* 🔥 แก้ไข: ขยับเด็กเข้าไปหาหัวใจอีก (จาก 5% -> 15%) */
         .body_left {
             width: 130px; 
             position: absolute; 
-            bottom: 120px; /* ปรับความสูง */
-            left: 10%;     /* ชิดซ้าย */
-            right: auto;   /* ยกเลิกชิดขวา */
+            bottom: 120px; 
+            left: 15%;     /* ขยับเข้ากลางมากขึ้น */
             z-index: 98;
             animation: bounceIn 2s infinite ease-in-out;
         }
-        /* น้องเด็กหันหน้าไปทางขวาอยู่แล้ว ไม่ต้องกลับด้าน (เอา transform ออก) */
         .body_left img { 
             width: 100%; height: auto; 
         }
@@ -141,15 +152,15 @@
             50% { transform: translateY(-8px) rotate(-3deg); } 
         }
 
-        /* ใช้สไตล์ Love แบบต้นฉบับเป๊ะๆ */
+        /* ใช้สไตล์ Love แบบต้นฉบับ */
         .love {
             width: 520px; 
             height: 440px;
             position: absolute;
             left: 50%; 
             top: 50%;
-            margin: -260px 0 0 -220px; /* สูตรจัดกึ่งกลางต้นฉบับ */
-            transform: scale(0.65); /* ย่อให้พอดีมือถือ */
+            margin: -260px 0 0 -220px; 
+            transform: scale(0.65); 
         }
 
         .love .block {
@@ -215,6 +226,7 @@
 
     <div id="main-content">
         <div class="message-box" id="msg-box">
+            <img src="heart.png" class="box-heart-decor" alt="Heart Decoration">
             <span id="typed-text"></span>
         </div>
         
@@ -229,14 +241,14 @@
             </div>
             <div class="logo">
                 <b>I <span>Lo</span>ve<span> Y</span>ou</b>
-                <p style="font-family: 'Itim'; font-size: 18px; margin-top: 5px; color: #e75480;">รักและคิดถึงเสมอ... จากครูBIG</p>
+                <p style="font-family: 'Itim'; font-size: 23px; margin-top: 5px; color: #e75480;">รักและคิดถึงเสมอ... จากครูBIG</p>
             </div>
             <button id="replay-btn" onclick="showTextAgain()">อ่านข้อความอีกครั้ง</button>
         </div>
     </div>
 
     <script>
-        // --- 🔥 ข้อมูลต้นฉบับ 100% จาก love.js (คืนค่าเดิมทั้งหมด) ---
+        // --- ข้อมูลต้นฉบับ ---
         const blk_pitn = { 
             block1: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
             block2: [[0, 1], [0, 0], [-1, 0], [0, -1]],
@@ -255,12 +267,12 @@
             block15: [[1, -1], [0, 0], [-1, 0], [1, 0]],
             block16: [[-1, -1], [0, 0], [-1, 0], [1, 0]],
             block17: [[0, 1], [0, 0], [-1, 0], [0, -1]],
-            block18: [[0, 1], [0, 0], [-1, 0], [-1, -1]], // คืนค่าเดิม
+            block18: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
             block19: [[0, -1], [0, 0], [-1, 0], [1, 0]],
             block20: [[1, -1], [0, 0], [-1, 0], [1, 0]],
             block21: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
             block22: [[1, 1], [0, 0], [-1, 0], [1, 0]],
-            block23: [[0, 2], [0, 0], [0, -1], [0, 1]] // คืนค่าเดิมครบ 4 ดวง
+            block23: [[0, 2], [0, 0], [0, -1], [0, 1]]
         };
         
         const offset_pitn = { 
@@ -286,7 +298,6 @@
             love.innerHTML = '<div class="block"><div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div></div>';
             block = love.children[0];
 
-            // ตั้งค่าตำแหน่งตามต้นฉบับ
             block.style.top = "50%";
             block.style.left = "50%";
             block.style.margin = "-20px 0 0 -20px";
@@ -306,7 +317,6 @@
                 block.style.top = block_top - 40 * offset_pitn["block" + index][1] + "px";
                 
                 for (let i = 0; i < block.children.length; i++) {
-                    // ใช้ logic เดิม ไม่ต้องซ่อน div แล้ว เพราะเราคืนค่าเดิม
                     block.children[i].style.left = blk_pitn["block" + index][i][0] * -40 + "px";
                     block.children[i].style.top = blk_pitn["block" + index][i][1] * -40 + "px";
                 }
@@ -324,13 +334,14 @@
 ขอบคุณสำหรับทุกความทรงจำดีๆ 
 ขอบคุณที่เป็นเด็กดี (บ้าง ดื้อบ้าง 555)
 ขอบคุณที่ทำให้การฝึกสอนของครูมีความหมายมากๆ
+ครูจะไม่ลืมความทรงจำนี้เลย
 
 ถึงเวลาที่ครูต้องไปแล้ว...
 ขอให้ทุกคนเติบโตอย่างสดใส 
 มีความสุขมากๆ กับเส้นทางข้างหน้านะ
 
 อย่าลืมดูแลตัวเองดีๆ นะเด็กๆ
-ครูจะคอยเฝ้าดูความสำเร็จของพวกหนูอยู่เสมอ...
+ครูจะคอยเฝ้าดูความสำเร็จของทุกคนอยู่เสมอ...
 
 รักทุกคนนะครับ. 💖`;
 
@@ -361,7 +372,6 @@
                 i++;
                 setTimeout(typeWriter,50);
             }else{
-                // หน่วงเวลา 5 วินาที
                 setTimeout(switchToAnimation, 5000);
             }
         }
