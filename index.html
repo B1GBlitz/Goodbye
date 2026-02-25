@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Itim&family=Vibur&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. การตั้งค่าพื้นฐาน --- */
+        /* --- 1. ตั้งค่าพื้นฐาน --- */
         :root { 
             --bg-gradient: linear-gradient(135deg, #ffcad4 0%, #f4acb7 100%);
             --text-dark: #6d4c41; 
@@ -121,23 +121,23 @@
 
         .container { width: 100%; height: 100%; position: relative; }
         
-        /* 🔥 แก้ไข: ย้ายตำแหน่งเด็กไปทางซ้าย */
+        /* 🔥 แก้ไข 1: ย้ายเด็กไปซ้าย + กลับด้านรูป */
         .body_left {
             width: 130px; 
             position: absolute; 
             bottom: 100px; 
-            left: 5%; /* เปลี่ยนจาก right เป็น left */
+            left: 5%; /* อยู่ฝั่งซ้าย */
             z-index: 98;
             animation: bounceIn 2s infinite ease-in-out;
         }
         @keyframes bounceIn { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-8px) rotate(3deg); } }
         
-        /* 🔥 แก้ไข: กลับด้านรูปเด็กให้หันไปทางขวา (ชี้เข้าหาหัวใจ) */
         .body_left img { 
             width: 100%; height: auto; 
-            transform: scaleX(-1); /* กลับด้านแนวนอน */
+            transform: scaleX(-1); /* กลับด้านรูปให้หันไปทางขวา */
         }
 
+        /* สไตล์หัวใจต้นฉบับ */
         .love {
             width: 520px; 
             height: 440px;
@@ -145,7 +145,7 @@
             left: 50%; 
             top: 50%;
             margin: -260px 0 0 -220px;
-            transform: scale(0.65);
+            transform: scale(0.65); /* ย่อให้พอดีมือถือ */
         }
 
         .love .block {
@@ -167,16 +167,20 @@
         }
         .logo b { font: 200 50px "Vibur", sans-serif; color: crimson; text-shadow: 0 0 15px #ffb7b2; }
 
+        /* 🔥 แก้ไข 3: ขยายปุ่มให้ใหญ่ขึ้นสำหรับมือถือ */
         #replay-btn {
-            padding: 10px 20px;
+            padding: 15px 30px; /* เพิ่ม padding */
+            font-size: 1.2rem;  /* เพิ่มขนาดตัวหนังสือ */
             background: white; color: var(--heart-color);
-            border: 2px solid var(--heart-color);
-            border-radius: 20px;
+            border: 3px solid var(--heart-color); /* ขอบหนาขึ้น */
+            border-radius: 30px;
             cursor: pointer;
             font-family: 'Itim';
+            font-weight: bold;
             display: none; 
             z-index: 100;
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 5px 15px rgba(216, 17, 89, 0.3); /* เพิ่มเงา */
         }
 
         .floating-hearts-container { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
@@ -229,7 +233,34 @@
     </div>
 
     <script>
-        const blk_pitn = { block1: [[0, 1], [0, 0], [-1, 0], [-1, -1]], block2: [[0, 1], [0, 0], [-1, 0], [0, -1]], block3: [[-1, 1], [0, 0], [-1, 0], [-1, -1]], block4: [[0, 1], [0, 0], [-1, 0], [-1, -1]], block5: [[-1, 1], [0, 0], [-1, 0], [0, -1]], block6: [[0, -1], [0, 0], [-1, 0], [1, -1]], block7: [[-1, -1], [0, 0], [-1, 0], [1, 0]], block8: [[-1, 1], [0, 0], [-1, 0], [-1, -1]], block9: [[0, -1], [0, 0], [-1, 0], [1, 0]], block10: [[-1, 1], [0, 0], [-1, 0], [1, 0]], block11: [[2, 0], [0, 0], [-1, 0], [1, 0]], block12: [[0, 1], [0, 0], [-1, 0], [0, -1]], block13: [[0, 1], [0, 0], [-1, 0], [-1, -1]], block14: [[1, 1], [0, 0], [-1, 0], [1, 0]], block15: [[1, -1], [0, 0], [-1, 0], [1, 0]], block16: [[-1, -1], [0, 0], [-1, 0], [1, 0]], block17: [[0, 1], [0, 0], [-1, 0], [0, -1]], block18: [[0, 1], [0, 0], [-1, 0], [-1, -1]], block19: [[0, -1], [0, 0], [-1, 0], [1, 0]], block20: [[1, -1], [0, 0], [-1, 0], [1, 0]], block21: [[0, 1], [0, 0], [-1, 0], [-1, -1]], block22: [[1, 1], [0, 0], [-1, 0], [1, 0]], block23: [[0, 2], [0, 0], [0, -1], [0, 1]] };
+        // --- ข้อมูลบล็อก (มีการแก้ไข block23) ---
+        const blk_pitn = { 
+            block1: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+            block2: [[0, 1], [0, 0], [-1, 0], [0, -1]],
+            block3: [[-1, 1], [0, 0], [-1, 0], [-1, -1]],
+            block4: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+            block5: [[-1, 1], [0, 0], [-1, 0], [0, -1]],
+            block6: [[0, -1], [0, 0], [-1, 0], [1, -1]],
+            block7: [[-1, -1], [0, 0], [-1, 0], [1, 0]],
+            block8: [[-1, 1], [0, 0], [-1, 0], [-1, -1]],
+            block9: [[0, -1], [0, 0], [-1, 0], [1, 0]],
+            block10: [[-1, 1], [0, 0], [-1, 0], [1, 0]],
+            block11: [[2, 0], [0, 0], [-1, 0], [1, 0]],
+            block12: [[0, 1], [0, 0], [-1, 0], [0, -1]],
+            block13: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+            block14: [[1, 1], [0, 0], [-1, 0], [1, 0]],
+            block15: [[1, -1], [0, 0], [-1, 0], [1, 0]],
+            block16: [[-1, -1], [0, 0], [-1, 0], [1, 0]],
+            block17: [[0, 1], [0, 0], [-1, 0], [0, -1]],
+            block18: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+            block19: [[0, -1], [0, 0], [-1, 0], [1, 0]],
+            block20: [[1, -1], [0, 0], [-1, 0], [1, 0]],
+            block21: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
+            block22: [[1, 1], [0, 0], [-1, 0], [1, 0]],
+            // 🔥 แก้ไข 2: ลบหัวใจ 1 ดวงใน block23 (จาก 4 เหลือ 3)
+            block23: [[0, 2], [0, 0], [0, -1]] // ลบ [0, 1] ออกไป
+        };
+        
         const offset_pitn = { block1: [5, 3], block2: [5, 1], block3: [3, 4], block4: [3, 2], block5: [3, -1], block6: [2, 5], block7: [2, 1], block8: [1, -1], block9: [1, -3], block10: [1, 2], block11: [0, 3], block12: [0, 0], block13: [-1, -4], block14: [0, -2], block15: [-2, 4], block16: [-2, 2], block17: [-2, 0], block18: [-3, -2], block19: [-4, 0], block20: [-3, 5], block21: [-5, 3], block22: [-4, 1], block23: [-6, 1] };
 
         let isAnimationStarted = false;
@@ -264,10 +295,21 @@
                 block.style.visibility = "visible"; 
                 block.style.left = block_left + 40 * offset_pitn["block" + index][0] + "px";
                 block.style.top = block_top - 40 * offset_pitn["block" + index][1] + "px";
-                for (let i = 0; i < block.children.length; i++) {
-                    block.children[i].style.left = blk_pitn["block" + index][i][0] * -40 + "px";
-                    block.children[i].style.top = blk_pitn["block" + index][i][1] * -40 + "px";
+                
+                // ลูปสร้างหัวใจตามจำนวนใน blk_pitn (ซึ่ง block23 เหลือ 3 ดวงแล้ว)
+                for (let i = 0; i < blk_pitn["block" + index].length; i++) {
+                    // เช็คว่ามี div ลูกให้ใช้ไหม (เผื่อกรณี block แรกมี 4 แต่ block หลังมี 3)
+                    if (block.children[i]) {
+                        block.children[i].style.left = blk_pitn["block" + index][i][0] * -40 + "px";
+                        block.children[i].style.top = blk_pitn["block" + index][i][1] * -40 + "px";
+                        block.children[i].style.display = "block"; // แสดงผล
+                    }
                 }
+                // ซ่อน div ที่ไม่ได้ใช้ (ถ้ามี)
+                for (let i = blk_pitn["block" + index].length; i < block.children.length; i++) {
+                    block.children[i].style.display = "none";
+                }
+
                 let clone_block = block.cloneNode(true);
                 love.appendChild(clone_block);
             }
@@ -285,9 +327,10 @@
 ถึงเวลาที่ครูต้องไปแล้ว...
 ขอให้ทุกคนเติบโตอย่างสดใส 
 มีความสุขมากๆ กับเส้นทางข้างหน้านะ
+ครูจะไม่ลืมความทรงจำนี้เลย
 
 อย่าลืมดูแลตัวเองดีๆ นะเด็กๆ
-ครูจะคอยเฝ้าดูความสำเร็จของพวกหนูอยู่เสมอ...
+ครูจะคอยเฝ้าดูความสำเร็จของพวกเราทุกคนอยู่เสมอ...
 
 รักทุกคนนะครับ. 💖`;
 
@@ -318,7 +361,7 @@
                 i++;
                 setTimeout(typeWriter,50);
             }else{
-                // 🔥 แก้ไข: ปรับเวลาหน่วงเหลือ 5 วินาที
+                // หน่วงเวลา 5 วินาทีตามที่ขอ
                 setTimeout(switchToAnimation, 5000);
             }
         }
