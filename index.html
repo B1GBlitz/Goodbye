@@ -100,19 +100,20 @@
             opacity: 1; transition: opacity 1s, transform 1s;
             display: flex; justify-content: center; align-items: center;
             z-index: 20;
-            overflow: visible; /* อนุญาตให้หัวใจล้นขอบได้ */
+            overflow: visible; 
         }
 
-        /* 🔥 เพิ่มหัวใจมุมซ้ายบนของกล่องข้อความ */
+        /* 🔥 สไตล์สำหรับหัวใจ SVG มุมกล่อง (โปร่งใสแน่นอน) */
         .box-heart-decor {
             position: absolute;
-            top: -25px;  /* ขยับขึ้นไปเกาะขอบบน */
-            left: -20px; /* ขยับไปทางซ้ายเกาะขอบซ้าย */
-            width: 70px; /* ขนาดหัวใจกำลังดี */
-            height: auto;
-            transform: rotate(-15deg); /* เอียงนิดๆ ให้ดูน่ารัก */
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+            top: -35px;  /* ขยับขึ้นไปอีกนิด */
+            left: -25px; /* ขยับซ้ายอีกหน่อย */
+            width: 80px; /* ขนาดหัวใจ */
+            height: 80px;
+            transform: rotate(-20deg); 
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15)); /* เงาสวยๆ */
             z-index: 25;
+            fill: #ff477e; /* สีหัวใจ */
         }
         
         #typed-text { 
@@ -134,15 +135,16 @@
 
         .container { width: 100%; height: 100%; position: relative; }
         
-        /* 🔥 แก้ไข: ขยับเด็กเข้าไปหาหัวใจอีก (จาก 5% -> 15%) */
+        /* 🔥 แก้ไข 2: ขยับเด็กไปที่ 35% */
         .body_left {
             width: 130px; 
             position: absolute; 
             bottom: 120px; 
-            left: 15%;     /* ขยับเข้ากลางมากขึ้น */
+            left: 35%;     /* ปรับตามสั่งครับ */
             z-index: 98;
             animation: bounceIn 2s infinite ease-in-out;
         }
+        /* รูปเด็กไม่ต้องกลับด้าน (เพราะไฟล์เดิมหันขวาอยู่แล้ว) */
         .body_left img { 
             width: 100%; height: auto; 
         }
@@ -152,7 +154,6 @@
             50% { transform: translateY(-8px) rotate(-3deg); } 
         }
 
-        /* ใช้สไตล์ Love แบบต้นฉบับ */
         .love {
             width: 520px; 
             height: 440px;
@@ -226,7 +227,9 @@
 
     <div id="main-content">
         <div class="message-box" id="msg-box">
-            <img src="heart.png" class="box-heart-decor" alt="Heart Decoration">
+            <svg class="box-heart-decor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.0005 26.9688C16.2905 26.9688 26.666 21.0313 26.666 12.7292C26.666 8.35421 23.3338 5.02087 19.3338 5.02087C17.2088 5.02087 16.0005 6.27087 16.0005 6.27087C16.0005 6.27087 14.7922 5.02087 12.6672 5.02087C8.66717 5.02087 5.33383 8.35421 5.33383 12.7292C5.33383 21.0313 15.7105 26.9688 16.0005 26.9688Z" />
+            </svg>
             <span id="typed-text"></span>
         </div>
         
@@ -241,14 +244,13 @@
             </div>
             <div class="logo">
                 <b>I <span>Lo</span>ve<span> Y</span>ou</b>
-                <p style="font-family: 'Itim'; font-size: 23px; margin-top: 5px; color: #e75480;">รักและคิดถึงเสมอ... จากครูBIG</p>
+                <p style="font-family: 'Itim'; font-size: 18px; margin-top: 5px; color: #e75480;">รักและคิดถึงเสมอ... จากครูBIG</p>
             </div>
             <button id="replay-btn" onclick="showTextAgain()">อ่านข้อความอีกครั้ง</button>
         </div>
     </div>
 
     <script>
-        // --- ข้อมูลต้นฉบับ ---
         const blk_pitn = { 
             block1: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
             block2: [[0, 1], [0, 0], [-1, 0], [0, -1]],
@@ -334,14 +336,13 @@
 ขอบคุณสำหรับทุกความทรงจำดีๆ 
 ขอบคุณที่เป็นเด็กดี (บ้าง ดื้อบ้าง 555)
 ขอบคุณที่ทำให้การฝึกสอนของครูมีความหมายมากๆ
-ครูจะไม่ลืมความทรงจำนี้เลย
 
 ถึงเวลาที่ครูต้องไปแล้ว...
 ขอให้ทุกคนเติบโตอย่างสดใส 
 มีความสุขมากๆ กับเส้นทางข้างหน้านะ
 
 อย่าลืมดูแลตัวเองดีๆ นะเด็กๆ
-ครูจะคอยเฝ้าดูความสำเร็จของทุกคนอยู่เสมอ...
+ครูจะคอยเฝ้าดูความสำเร็จของพวกหนูอยู่เสมอ...
 
 รักทุกคนนะครับ. 💖`;
 
