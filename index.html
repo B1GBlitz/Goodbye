@@ -103,16 +103,17 @@
             overflow: visible; 
         }
 
+        /* 🔥 สไตล์สำหรับหัวใจ SVG มุมกล่อง (โปร่งใสแน่นอน) */
         .box-heart-decor {
             position: absolute;
-            top: -35px;  
-            left: -25px; 
-            width: 80px; 
+            top: -35px;  /* ขยับขึ้นไปอีกนิด */
+            left: -25px; /* ขยับซ้ายอีกหน่อย */
+            width: 80px; /* ขนาดหัวใจ */
             height: 80px;
             transform: rotate(-20deg); 
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15)); 
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.15)); /* เงาสวยๆ */
             z-index: 25;
-            fill: #ff477e; 
+            fill: #ff477e; /* สีหัวใจ */
         }
         
         #typed-text { 
@@ -134,14 +135,16 @@
 
         .container { width: 100%; height: 100%; position: relative; }
         
+        /* 🔥 แก้ไข 2: ขยับเด็กไปที่ 35% */
         .body_left {
             width: 130px; 
             position: absolute; 
             bottom: 120px; 
-            left: 35%;     
+            left: 35%;     /* ปรับตามสั่งครับ */
             z-index: 98;
             animation: bounceIn 2s infinite ease-in-out;
         }
+        /* รูปเด็กไม่ต้องกลับด้าน (เพราะไฟล์เดิมหันขวาอยู่แล้ว) */
         .body_left img { 
             width: 100%; height: auto; 
         }
@@ -219,7 +222,7 @@
                 <div class="seal-heart">❤</div>
             </div>
         </div>
-        <div class="tap-text">แตะเพื่อเปิดอ่าน...</div>
+        <div class="tap-text">แตะจดหมายเพื่อเปิดอ่าน...</div>
     </div>
 
     <div id="main-content">
@@ -236,15 +239,12 @@
                     <img id="gifBiu" src="biubiubiu.gif" alt="Kid Pointing">
                 </div>
                 <div class="love">
-                    <div class="block">
-                        <div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div>
-                        <div class="div5"></div><div class="div6"></div>
-                    </div>
+                    <div class="block"><div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div></div>
                 </div>
             </div>
             <div class="logo">
                 <b>I <span>Lo</span>ve<span> Y</span>ou</b>
-                <p style="font-family: 'Itim'; font-size: 24px; margin-top: 5px; color: #e75480;">รักและคิดถึงเสมอ... จากครูBIG</p>
+                <p style="font-family: 'Itim'; font-size: 25px; margin-top: 5px; color: #e75480;">รักและคิดถึงเสมอ... จากครูBIG</p>
             </div>
             <button id="replay-btn" onclick="showTextAgain()">อ่านข้อความอีกครั้ง</button>
         </div>
@@ -269,13 +269,12 @@
             block15: [[1, -1], [0, 0], [-1, 0], [1, 0]],
             block16: [[-1, -1], [0, 0], [-1, 0], [1, 0]],
             block17: [[0, 1], [0, 0], [-1, 0], [0, -1]],
-            block18: [[0, 1], [0, 0], [-1, 0], [-1, -1], [0, -1]],
+            block18: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
             block19: [[0, -1], [0, 0], [-1, 0], [1, 0]],
             block20: [[1, -1], [0, 0], [-1, 0], [1, 0]],
             block21: [[0, 1], [0, 0], [-1, 0], [-1, -1]],
             block22: [[1, 1], [0, 0], [-1, 0], [1, 0]],
-            // 🔥 Block 23: ปรับให้มี 3 ดวง (รูปทรงสมมาตรกับฝั่งขวา)
-            block23: [[0, 1], [0, 0], [1, 0]] 
+            block23: [[0, 2], [0, 0], [0, -1], [0, 1]]
         };
         
         const offset_pitn = { 
@@ -298,7 +297,7 @@
             let index = 0;
             let timer = null;
             
-            love.innerHTML = '<div class="block"><div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div><div class="div5"></div><div class="div6"></div></div>';
+            love.innerHTML = '<div class="block"><div class="div1"></div><div class="div2"></div><div class="div3"></div><div class="div4"></div></div>';
             block = love.children[0];
 
             block.style.top = "50%";
@@ -320,13 +319,8 @@
                 block.style.top = block_top - 40 * offset_pitn["block" + index][1] + "px";
                 
                 for (let i = 0; i < block.children.length; i++) {
-                    if (blk_pitn["block" + index][i]) {
-                        block.children[i].style.left = blk_pitn["block" + index][i][0] * -40 + "px";
-                        block.children[i].style.top = blk_pitn["block" + index][i][1] * -40 + "px";
-                        block.children[i].style.display = "block"; 
-                    } else {
-                         block.children[i].style.display = "none";
-                    }
+                    block.children[i].style.left = blk_pitn["block" + index][i][0] * -40 + "px";
+                    block.children[i].style.top = blk_pitn["block" + index][i][1] * -40 + "px";
                 }
 
                 let clone_block = block.cloneNode(true);
